@@ -1,0 +1,106 @@
+{% form_theme form _self %}
+
+{% block ailoveckeditor_widget %}
+{% spaceless %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/ailoveckeditor/css/ckeditor.css')  }}"/>
+    <style>
+    {% set containerId = '#sonata-ba-field-container-' ~ id %}
+    {{ containerId }} .cke_wrapper, {{ containerId }}  .cke_dialog_contents, {{ containerId }} a.cke_dialog_tab, {{ containerId }} .cke_dialog_footer {
+            background-color: #fff!important;
+        }
+    {#{{ containerId }} .cke_skin_kama *, .cke_skin_kama * {#}
+            /*background-color: #fff!important;*/
+       /*}*/
+
+    .cke_wrapper, .cke_dialog_contents, a.cke_dialog_tab, .cke_dialog_footer {
+        background-color: #fff!important;
+    }
+
+    /*.cke_dialog_footer {*/
+
+        /*background: none!important;*/
+        /*background-color: #fff!important;*/
+    /*}*/
+
+    .cke_skin_kama a.cke_dialog_tab, .cke_skin_kama a:link.cke_dialog_tab, .cke_skin_kama a:active.cke_dialog_tab, .cke_skin_kama a:hover.cke_dialog_tab, .cke_skin_kama a:visited.cke_dialog_tab, .cke_skin_kama .cke_dialog_contents, .cke_dialog_footer, .cke_skin_kama .cke_dialog_footer {
+
+        background-color: #fff!important;
+    }
+    </style>
+    <textarea {{ block('widget_attributes') }}>{{ value }}</textarea>
+
+    <script type="text/javascript">
+    {% autoescape true js %}
+        var CKEDITOR_BASEPATH = '{{ app.request.basePath ~ '/bundles/trsteelckeditor/' }}';
+    {% endautoescape %}
+    </script>
+
+    <script type="text/javascript" src="{{ asset('bundles/trsteelckeditor/ckeditor.js') }}"></script>
+    <script type="text/javascript">
+    {% autoescape false %}
+        {% set plugins = '' %}
+        {% for name, external_plugin in external_plugins %}
+            CKEDITOR.plugins.addExternal('{{ name }}', '{{ app.request.basePath ~ external_plugin.path }}', '{{ external_plugin.file }}');
+            {% if not loop.first %}
+                {% set plugins = plugins ~ ',' %}
+            {% endif %}
+            {% set plugins = plugins ~ name %}
+        {% endfor %}
+        CKEDITOR.replace("{{ id }}",{
+            {% if width is not null %}
+                width: '{{ width }}',
+            {% endif %}
+            {% if height is not null %}
+                height: '{{ height }}',
+            {% endif %}
+            {% if language is not null %}
+                language: '{{ language }}',
+            {% endif %}
+            {% if ui_color is not null %}
+                uiColor: "{{ ui_color }}",
+            {% endif %}
+            {% if startup_outline_blocks == true %}
+                startupOutlineBlocks: {{ startup_outline_blocks }},
+            {% endif %}
+            {% if filebrowser_browse_url is not null %}
+                filebrowserBrowseUrl: '{{ filebrowser_browse_url }}',
+            {% endif %}
+            {% if filebrowser_upload_url is not null %}
+                filebrowserUploadUrl: '{{ filebrowser_upload_url }}',
+            {% endif %}
+            {% if filebrowser_image_browse_url is not null %}
+                filebrowserImageBrowseUrl: '{{ filebrowser_image_browse_url }}',
+            {% endif %}
+            {% if filebrowser_image_upload_url is not null %}
+                filebrowserImageUploadUrl: '{{ filebrowser_image_upload_url }}',
+            {% endif %}
+            {% if filebrowser_flash_browse_url is not null %}
+                filebrowserFlashBrowseUrl: '{{ filebrowser_flash_browse_url }}',
+            {% endif %}
+            {% if filebrowser_flash_upload_url is not null %}
+                filebrowserFlashUploadUrl: '{{ filebrowser_flash_upload_url }}',
+            {% endif %}
+            {% if skin is not null %}
+                skin: '{{ skin }}',
+            {% endif %}
+            {% if format_tags|length > 0 %}
+                format_tags: '{{ format_tags | join(';') | raw }}',
+            {% endif %}
+            {% if base_href is not null %}
+                baseHref: '{{ base_href }}',
+            {% endif %}
+            {% if body_class is not null %}
+                bodyClass: '{{ body_class }}',
+            {% endif %}
+            {% if contents_css is not null %}
+                contentsCss: '{{ asset(contents_css) }}',
+            {% endif %}
+            {% if plugins %}
+                extraPlugins: '{{ plugins }}',
+            {% endif %}
+            toolbar: {{ toolbar | json_encode | raw }}
+        });
+    {% endautoescape %}
+    </script>
+{% endspaceless %}
+{% endblock %}

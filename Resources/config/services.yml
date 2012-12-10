@@ -1,0 +1,14 @@
+parameters:
+#    ailove_ck_editor.example.class: Ailove\CKEditorBundle\Example
+    ailove_ckeditor.form.type.class: Ailove\CKEditorBundle\Form\Type\AiloveCKEditorType
+
+services:
+#    ailove_ck_editor.example:
+#        class: %ailove_ck_editor.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
+    ailove_ckeditor.form.type:
+        class: %ailove_ckeditor.form.type.class%
+        tags:
+            - { name: form.type, alias: ailoveckeditor }
+        arguments: [ @service_container ]
+

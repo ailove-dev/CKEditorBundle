@@ -1,0 +1,3 @@
+ailove_ckeditor_public_upload:
+    pattern:  /public/upload/image
+    defaults: { _controller: AiloveCKEditorBundle:Default:upload }

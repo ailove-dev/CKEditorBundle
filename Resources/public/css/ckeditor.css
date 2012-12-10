@@ -1,0 +1,4 @@
+.cke_wrapper, .cke_dialog_contents, a.cke_dialog_tab, .cke_dialog_footer {
+    background: none!important;
+    background-color: #fff!important;
+}
